@@ -1,0 +1,147 @@
+
+<div class="grain" aria-hidden="true"></div>
+<div class="bgword" aria-hidden="true">REFRESHER</div>
+
+<header class="topbar">
+  <div class="brand">
+    <span>Cookie</span> <span class="grad">Refresher</span>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab is-active" data-tab="single">Single</button>
+    <button class="tab" data-tab="bulk">Bulk</button>
+    <button class="tab" data-tab="vault">Vault <span class="pill" id="vaultCount">0</span></button>
+    <button class="tab" data-tab="settings">Settings</button>
+  </nav>
+  <div class="topright">
+    <span class="status"><i></i>Online</span>
+  </div>
+</header>
+
+<main>
+  
+  <section id="view-single" class="view">
+    <div class="card" id="singleForm">
+      <label class="lbl" for="cookieInput">.ROBLOSECURITY</label>
+      <textarea id="cookieInput" class="input mono" rows="3" spellcheck="false" placeholder="_|WARNING:-DO-NOT-SHARE-THIS.--Shut-up-and-go-away-cookie..."></textarea>
+      <div class="row wrap" id="singleToggles"></div>
+      <div class="row">
+        <button class="btn primary" id="btnRefresh">Refresh Cookie</button>
+        <button class="btn" id="btnPaste">Paste</button>
+        <button class="btn" id="btnClearSingle">Clear</button>
+      </div>
+      <p class="hint">Your cookie is processed entirely in your browser. Nothing is uploaded.</p>
+    </div>
+    <div id="singleResult"></div>
+  </section>
+
+  
+  <section id="view-bulk" class="view" hidden="">
+    <div class="bulk">
+      <aside class="sidebar card">
+        <h3 class="side-title">Collection</h3>
+        <div id="bulkToggles" class="toggles"></div>
+
+        <h3 class="side-title">Speed</h3>
+        <div class="field">
+          <label for="bulkConc">Concurrency <b id="concVal">4</b></label>
+          <input type="range" id="bulkConc" min="1" max="12" value="4">
+        </div>
+        <p class="hint" id="speedHint">Quick mode — light data only.</p>
+
+        <h3 class="side-title">Input</h3>
+        <textarea id="bulkInput" class="input mono small" rows="6" spellcheck="false" placeholder="one cookie per line"></textarea>
+        <div class="row wrap">
+          <button class="btn small" id="btnImport">Import .txt</button>
+          <input type="file" id="fileImport" accept=".txt,.csv" hidden="">
+          <button class="btn small" id="btnClear">Clear</button>
+        </div>
+        <div class="row wrap">
+          <button class="btn primary small" id="btnStart">Start</button>
+          <button class="btn small" id="btnStop" disabled="">Stop</button>
+        </div>
+        <button class="btn small" id="btnExport">Export report</button>
+      </aside>
+
+      <div class="workspace">
+        <div class="card prog">
+          <div class="prog-head">
+            <b id="progPct">0% Complete</b>
+            <span class="mono dim" id="progTime">—</span>
+          </div>
+          <div class="bar"><i id="progBar"></i></div>
+          <div class="filters" id="bulkFilters">
+            <button class="chip is-active" data-filter="success">Success <b id="cSuccess">0</b></button>
+            <button class="chip" data-filter="all">All <b id="cAll">0</b></button>
+            <button class="chip" data-filter="error">Errors <b id="cError">0</b></button>
+            <button class="btn small ghost" id="btnShare">Share report</button>
+          </div>
+        </div>
+        <div id="bulkList" class="list"></div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="view-vault" class="view" hidden="">
+    <div class="card">
+      <div class="row wrap">
+        <input id="vaultSearch" class="input" placeholder="Search username or ID…">
+        <select id="vaultSort" class="input select">
+          <option value="username">Sort: Username</option>
+          <option value="robux">Sort: Robux</option>
+          <option value="rap">Sort: RAP</option>
+          <option value="age">Sort: Account age</option>
+          <option value="checked">Sort: Last checked</option>
+        </select>
+        <button class="btn small" id="btnValidateAll">Validate all</button>
+        <button class="btn small" id="btnExportVault">Export</button>
+        <button class="btn small danger" id="btnClearVault">Wipe vault</button>
+      </div>
+      <div id="vaultCols" class="row wrap chips"></div>
+      <p class="hint">Valid cookies are kept here automatically. Invalid ones are removed on validation.</p>
+    </div>
+    <div id="vaultList"></div>
+  </section>
+
+  
+  <section id="view-settings" class="view" hidden="">
+    <div class="card">
+      <h3>Proxy</h3>
+      <p class="hint">Roblox has no CORS headers, so requests go through a proxy. Deploy <code>worker.js</code> to Cloudflare (free) and paste the URL below for the fastest, most reliable results.</p>
+      <label class="lbl" for="inpWorker">Cloudflare Worker URL</label>
+      <input id="inpWorker" class="input mono" placeholder="https://your-worker.your-name.workers.dev">
+      <label class="lbl" for="inpProxy">Custom proxy template (optional)</label>
+      <input id="inpProxy" class="input mono" placeholder="https://my.proxy/?url={url}">
+      <label class="check"><input type="checkbox" id="chkDirect"> Allow direct (no proxy) as last resort</label>
+      <div class="row">
+        <button class="btn small" id="btnTestProxy">Test connection</button>
+        <span class="mono small dim" id="proxyStatus">not tested</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Refresh behaviour</h3>
+      <label class="lbl" for="selRefreshMode">Mode</label>
+      <select id="selRefreshMode" class="input select">
+        <option value="preserve">Preserve — keep your existing sessions alive</option>
+        <option value="replace">Replace — rotate the current session</option>
+      </select>
+      <p class="hint">"Preserve" uses <code>/v1/authentication/refresh</code> and does not sign you out elsewhere.</p>
+    </div>
+    <div class="card">
+      <h3>Data</h3>
+      <div class="row">
+        <button class="btn small danger" id="btnWipe">Wipe all local data</button>
+        <span class="mono small dim" id="dataSize"></span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="toasts" class="toasts"></div>
+<div id="modal" class="modal" hidden=""><div class="modal-box" id="modalBox"></div></div>
+
+
+
+
+
+
